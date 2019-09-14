@@ -1,0 +1,11 @@
+{
+    "presets": ["@babel/preset-env"], // presets(设定转码规则)：过去需要进行规则集指定，现在使用@babel/preset-env搭配@babel/core解决
+    "plugins": [
+        [
+            "@babel/plugin-transform-runtime",
+            {
+                "polyfill": false
+            }
+        ]
+    ] // plugins(插件)：transform-runtime 插件表示不管浏览器是否支持ES6，只要是ES6的语法，它都会进行转码成ES5
+}
