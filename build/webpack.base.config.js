@@ -25,7 +25,7 @@ module.exports = {
                 use: {
                     loader: 'url-loader',
                     options: {
-                        limit: 8192,
+                        limit: 100,
                         name: 'images/[name].[ext]?[hash]'
                     }
                 }
@@ -38,7 +38,7 @@ module.exports = {
         ]
     },
     resolve: {
-        // extensions: ['.js', '.vue', '.scss', '.css'], //后缀名自动补全
+        extensions: ['.js'], //后缀名自动补全
         alias: {
             //别名
             '@': path.resolve(__dirname, '../src')
