@@ -11,7 +11,7 @@ module.exports = {
         main: path.resolve(__dirname, './main.js')
     },
     output: {
-        filename: '[name].[hash].js',
+        filename: '[name]/main.[hash].js',
         path: path.resolve(__dirname, './dist')
     },
     module: {
@@ -29,8 +29,10 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            filename: './index.html', //文件名
-            minify: true
+            filename: './main/index.html', //文件名
+            minify: true,
+            title: 'HTMLWEBPACK',
+            base: ''
         }),
 
         new CleanWebpackPlugin(),
@@ -38,7 +40,7 @@ module.exports = {
         new MiniCssExtractPlugin({
             // Options similar to the same options in webpackOptions.output
             // both options are optional
-            filename: '[name].[hash].css',
+            filename: '[name]/main.[hash].css',
             chunkFilename: '[id].[hash].css'
         })
     ]
