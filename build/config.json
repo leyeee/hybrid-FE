@@ -54,7 +54,8 @@
             chunksSortMode: 'auto',
             meta: {},
             title: 'Webpack App',
-            xhtml: false } },
+            xhtml: false,
+            base: '/m-reader/' } },
        [length]: 4 ],
     resolve:
      { alias:
@@ -65,6 +66,7 @@
     entry:
      { main: 'D:\\applications\\hybrid-FE\\apps\\m-reader\\src\\main.js' },
     output:
-     { filename: '[name].[hash].js',
-       path: 'D:\\applications\\hybrid-FE\\dist\\m-reader' } },
+     { filename: '[name].[hash:8].js',
+       path: 'D:\\applications\\hybrid-FE\\dist\\m-reader',
+       publicPath: '/m-reader/' } },
   [length]: 1 ]

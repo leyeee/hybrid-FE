@@ -12,8 +12,9 @@ module.exports = {
             main: path.resolve(__dirname, './src/main.js')
         },
         output: {
-            filename: '[name].[hash].js',
+            filename: '[name].[hash:8].js',
             path: path.resolve(__dirname, `../../dist/${dirname}`)
+            // publicPath: '/m-reader/'
         },
         resolve: {
             // extensions: ['.js'], //后缀名自动补全
@@ -25,7 +26,7 @@ module.exports = {
         plugins: [
             new HtmlWebpackPlugin({
                 template: path.resolve(__dirname, './public/index.html'),
-                filename: 'index.html'
+                base: '/m-reader/'
             })
         ]
     }

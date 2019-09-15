@@ -13,16 +13,19 @@ const compiler = webpack(webpackConfig);
 // create server
 const server = new WebpackDevServer(compiler, {
     clientLogLevel: 'info',
-    historyApiFallback: false,
-    contentBase: path.resolve(__dirname, '../dist/m-reader'),
-    watchContentBase: true,
+    historyApiFallback: true,
+    contentBase: false, //path.resolve(__dirname, '../dist/m-reader/'),
+    // watchContentBase: true,
     hot: true,
     quiet: true,
     compress: false,
     open: false,
-    publicPath: path.resolve(__dirname, '../dist/m-reader'),
+    publicPath: path.resolve(__dirname, '../dist/m-reader/'),
     overlay: true,
-    writeToDisk: true
+    writeToDisk: true,
+    staticOptions: {
+        redirect: false
+    }
 });
 
 fs.writeFile('build/config.json', util.inspect(webpackConfig, true, 10), err =>
