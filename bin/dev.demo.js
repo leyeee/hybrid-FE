@@ -23,6 +23,6 @@ const server = new WebpackDevServer(compiler, {
 
 server.listen(8080, '127.0.0.1', err => {
     if (err) {
-        reject(err);
+        console.log(err);
     }
 });

@@ -4,6 +4,7 @@ import router from './router';
 import store from './store';
 // import './registerServiceWorker';
 
+console.log(11111);
 new Vue({
     router,
     store,
