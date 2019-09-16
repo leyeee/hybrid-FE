@@ -1,177 +1,136 @@
-[
-  {
-    module: {
-      rules: [
-        {
-          test: /\.(png|svg|jpg|gif)$/ { [lastIndex]: 0 },
-          use: {
-            loader: 'url-loader',
-            options: { limit: 100, name: 'images/[name].[ext]?[hash]' }
-          }
-        },
-        {
-          test: /\.js$/ { [lastIndex]: 0 },
-          loader: 'babel-loader',
-          exclude: /node_modules/ { [lastIndex]: 0 }
-        },
-        { test: /\.vue$/ { [lastIndex]: 0 }, use: 'vue-loader' },
-        {
-          test: /\.css$/ { [lastIndex]: 0 },
-          use: [
-            'style-loader',
-            'vue-style-loader',
-            'css-loader',
-            [length]: 3
-          ]
-        },
-        [length]: 4
-      ]
-    },
-    plugins: [
-      ProgressPlugin {
-        profile: false,
-        handler: [Function] {
-          [length]: 2,
-          [name]: '',
-          [arguments]: null,
-          [caller]: null,
-          [prototype]: { [constructor]: [Circular] }
-        },
-        modulesCount: 500,
-        showEntries: false,
-        showModules: true,
-        showActiveModules: true
-      },
-      VueLoaderPlugin {},
-      HotModuleReplacementPlugin {
-        options: {},
-        multiStep: undefined,
-        fullBuildTimeout: 200,
-        requestTimeout: 10000
-      },
-      HtmlWebpackPlugin {
-        options: {
-          template: '/Users/niewei/WorkSpace/applications/hybrid-FE/node_modules/html-webpack-plugin/lib/loader.js!/Users/niewei/WorkSpace/applications/hybrid-FE/apps/m-reader/public/index.html',
-          templateParameters: [Function: templateParametersGenerator] {
-            [length]: 3,
-            [name]: 'templateParametersGenerator',
-            [prototype]: templateParametersGenerator { [constructor]: [Circular] }
-          },
-          filename: 'index.html',
-          hash: false,
-          inject: true,
-          compile: true,
-          favicon: false,
-          minify: false,
-          cache: true,
-          showErrors: true,
-          chunks: 'all',
-          excludeChunks: [ [length]: 0 ],
-          chunksSortMode: 'auto',
-          meta: {},
-          title: 'Webpack App',
-          xhtml: false,
-          base: '/m-reader/'
-        }
-      },
-      [length]: 4
-    ],
-    resolve: {
-      alias: {
-        'vue$': 'vue/dist/vue.esm.js',
-        '@': '/Users/niewei/WorkSpace/applications/hybrid-FE/apps/m-reader/src'
-      }
-    },
+[ { module:
+     { rules:
+        [ { test: { /\.(png|svg|jpg|gif)$/ [lastIndex]: 0 },
+            use:
+             { loader: 'url-loader',
+               options: { limit: 100, name: 'images/[name].[ext]?[hash]' } } },
+          { test: { /\.js$/ [lastIndex]: 0 },
+            loader: 'babel-loader',
+            exclude: { /node_modules/ [lastIndex]: 0 } },
+          { test: { /\.vue$/ [lastIndex]: 0 }, use: 'vue-loader' },
+          { test: { /\.css$/ [lastIndex]: 0 },
+            use:
+             [ 'style-loader', 'vue-style-loader', 'css-loader', [length]: 3 ] },
+          [length]: 4 ] },
+    plugins:
+     [ ProgressPlugin {
+         profile: false,
+         handler:
+          { [Function]
+            [length]: 2,
+            [name]: '',
+            [arguments]: null,
+            [caller]: null,
+            [prototype]: { [constructor]: [Circular] } },
+         modulesCount: 500,
+         showEntries: false,
+         showModules: true,
+         showActiveModules: true },
+       VueLoaderPlugin {},
+       HotModuleReplacementPlugin {
+         options: {},
+         multiStep: undefined,
+         fullBuildTimeout: 200,
+         requestTimeout: 10000 },
+       HtmlWebpackPlugin {
+         options:
+          { template:
+             'D:\\applications\\hybrid-FE\\node_modules\\html-webpack-plugin\\lib\\loader.js!D:\\applications\\hybrid-FE\\apps\\m-reader\\public\\index.html',
+            templateParameters:
+             { [Function: templateParametersGenerator]
+               [length]: 3,
+               [name]: 'templateParametersGenerator',
+               [prototype]: templateParametersGenerator { [constructor]: [Circular] } },
+            filename: '../index.html',
+            hash: false,
+            inject: true,
+            compile: true,
+            favicon: false,
+            minify: false,
+            cache: true,
+            showErrors: true,
+            chunks: 'all',
+            excludeChunks: [ [length]: 0 ],
+            chunksSortMode: 'auto',
+            meta: {},
+            title: 'Webpack App',
+            xhtml: false } },
+       [length]: 4 ],
+    resolve:
+     { alias:
+        { 'vue$': 'vue/dist/vue.esm.js',
+          '@': 'D:\\applications\\hybrid-FE\\apps\\m-reader\\src' } },
     mode: 'development',
     devtool: 'cheap-source-map',
-    entry: {
-      main: '/Users/niewei/WorkSpace/applications/hybrid-FE/apps/m-reader/src/main.js'
-    },
-    output: {
-      filename: '[name].[hash:8].js',
-      path: '/Users/niewei/WorkSpace/applications/hybrid-FE/dist/m-reader'
-    }
-  },
-  {
-    module: {
-      rules: [
-        {
-          test: /\.(png|svg|jpg|gif)$/ { [lastIndex]: 0 },
-          use: {
-            loader: 'url-loader',
-            options: { limit: 100, name: 'images/[name].[ext]?[hash]' }
-          }
-        },
-        {
-          test: /\.js$/ { [lastIndex]: 0 },
-          loader: 'babel-loader',
-          exclude: /node_modules/ { [lastIndex]: 0 }
-        },
-        [length]: 2
-      ]
-    },
-    plugins: [
-      ProgressPlugin {
-        profile: false,
-        handler: [Function] {
-          [length]: 2,
-          [name]: '',
-          [arguments]: null,
-          [caller]: null,
-          [prototype]: { [constructor]: [Circular] }
-        },
-        modulesCount: 500,
-        showEntries: false,
-        showModules: true,
-        showActiveModules: true
-      },
-      HotModuleReplacementPlugin {
-        options: {},
-        multiStep: undefined,
-        fullBuildTimeout: 200,
-        requestTimeout: 10000
-      },
-      HtmlWebpackPlugin {
-        options: {
-          template: '/Users/niewei/WorkSpace/applications/hybrid-FE/node_modules/html-webpack-plugin/lib/loader.js!/Users/niewei/WorkSpace/applications/hybrid-FE/apps/react-demo/public/index.html',
-          templateParameters: [Function: templateParametersGenerator] {
-            [length]: 3,
-            [name]: 'templateParametersGenerator',
-            [prototype]: templateParametersGenerator { [constructor]: [Circular] }
-          },
-          filename: 'index.html',
-          hash: false,
-          inject: true,
-          compile: true,
-          favicon: false,
-          minify: false,
-          cache: true,
-          showErrors: true,
-          chunks: 'all',
-          excludeChunks: [ [length]: 0 ],
-          chunksSortMode: 'auto',
-          meta: {},
-          title: 'Webpack App',
-          xhtml: false,
-          base: '/react-demo/'
-        }
-      },
-      [length]: 3
-    ],
+    entry:
+     { main: 'D:\\applications\\hybrid-FE\\apps\\m-reader\\src\\main.js' },
+    output:
+     { filename: '[name].[hash:8].js',
+       path: 'D:\\applications\\hybrid-FE\\dist\\m-reader\\js',
+       publicPath: '/reader/' } },
+  { module:
+     { rules:
+        [ { test: { /\.(png|svg|jpg|gif)$/ [lastIndex]: 0 },
+            use:
+             { loader: 'url-loader',
+               options: { limit: 100, name: 'images/[name].[ext]?[hash]' } } },
+          { test: { /\.js$/ [lastIndex]: 0 },
+            loader: 'babel-loader',
+            exclude: { /node_modules/ [lastIndex]: 0 } },
+          [length]: 2 ] },
+    plugins:
+     [ ProgressPlugin {
+         profile: false,
+         handler:
+          { [Function]
+            [length]: 2,
+            [name]: '',
+            [arguments]: null,
+            [caller]: null,
+            [prototype]: { [constructor]: [Circular] } },
+         modulesCount: 500,
+         showEntries: false,
+         showModules: true,
+         showActiveModules: true },
+       HotModuleReplacementPlugin {
+         options: {},
+         multiStep: undefined,
+         fullBuildTimeout: 200,
+         requestTimeout: 10000 },
+       HtmlWebpackPlugin {
+         options:
+          { template:
+             'D:\\applications\\hybrid-FE\\node_modules\\html-webpack-plugin\\lib\\loader.js!D:\\applications\\hybrid-FE\\apps\\react-demo\\public\\index.html',
+            templateParameters:
+             { [Function: templateParametersGenerator]
+               [length]: 3,
+               [name]: 'templateParametersGenerator',
+               [prototype]: templateParametersGenerator { [constructor]: [Circular] } },
+            filename: 'index.html',
+            hash: false,
+            inject: true,
+            compile: true,
+            favicon: false,
+            minify: false,
+            cache: true,
+            showErrors: true,
+            chunks: 'all',
+            excludeChunks: [ [length]: 0 ],
+            chunksSortMode: 'auto',
+            meta: {},
+            title: 'Webpack App',
+            xhtml: false,
+            base: '/react-demo/' } },
+       [length]: 3 ],
     mode: 'development',
     devtool: 'cheap-source-map',
-    entry: {
-      main: '/Users/niewei/WorkSpace/applications/hybrid-FE/apps/react-demo/src/index.js'
-    },
-    output: {
-      filename: '[name].[hash:8].js',
-      path: '/Users/niewei/WorkSpace/applications/hybrid-FE/dist/react-demo'
-    },
-    resolve: {
-      alias: {
-        '@': '/Users/niewei/WorkSpace/applications/hybrid-FE/apps/react-demo/src'
-      }
-    }
-  },
-  [length]: 2
-]
+    entry:
+     { main:
+        'D:\\applications\\hybrid-FE\\apps\\react-demo\\src\\index.js' },
+    output:
+     { filename: '[name].[hash:8].js',
+       path: 'D:\\applications\\hybrid-FE\\dist\\react-demo' },
+    resolve:
+     { alias:
+        { '@': 'D:\\applications\\hybrid-FE\\apps\\react-demo\\src' } } },
+  [length]: 2 ]

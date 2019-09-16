@@ -29,7 +29,7 @@ const routes = [
 ];
 
 export default new Router({
-    // base: 'm-reader',
+    base: '/reader',
     mode: 'history',
     base: process.env.BASE_URL,
     routes

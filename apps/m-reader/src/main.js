@@ -5,7 +5,7 @@ import store from './store';
 // import './registerServiceWorker';
 
 console.log(11111);
-new Vue({
+const app = new Vue({
     router,
     store,
     render: h => h(App)

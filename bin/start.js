@@ -14,18 +14,18 @@ const compiler = webpack(webpackConfig);
 const server = new WebpackDevServer(compiler, {
     clientLogLevel: 'info',
     historyApiFallback: true,
-    contentBase: path.resolve(__dirname, '../dist/m-reader/'),
+    contentBase: path.resolve(__dirname, '../dist/'),
     // watchContentBase: true,
     hot: true,
     quiet: true,
     compress: false,
     open: false,
-    publicPath: path.resolve(__dirname, '../dist/m-reader/'),
+    publicPath: path.resolve(__dirname, '../dist/'),
     overlay: true,
-    writeToDisk: true,
-    staticOptions: {
-        redirect: false
-    }
+    writeToDisk: true
+    // staticOptions: {
+    //     redirect: false
+    // }
 });
 
 fs.writeFile('build/config.json', util.inspect(webpackConfig, true, 10), err =>
