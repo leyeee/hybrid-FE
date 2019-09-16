@@ -14,7 +14,7 @@ const compiler = webpack(webpackConfig);
 const server = new WebpackDevServer(compiler, {
     clientLogLevel: 'info',
     historyApiFallback: true,
-    contentBase: false, //path.resolve(__dirname, '../dist/m-reader/'),
+    contentBase: path.resolve(__dirname, '../dist/m-reader/'),
     // watchContentBase: true,
     hot: true,
     quiet: true,
