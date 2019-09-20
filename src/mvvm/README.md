@@ -116,6 +116,7 @@ Dep.prototype = {
 那么问题来了，谁是订阅者？怎么往订阅器中添加订阅者？没错，上面的思路整理中我们已经明确订阅者应该是 `Watcher`, 而且 `var dep = new Dep();` 是在 `defineReactive` 方法内部定义的，所以想通过 `dep` 添加订阅者，就必须要在闭包内操作，所以我们可以在 `getter` 里面动手脚：
 
 ```javascript
+// Observer.js
 Object.defineProperty(data, key, {
     get: function() {
         // 由于需要在闭包内添加watcher，所以通过Dep定义一个全局target属性，暂存watcher, 添加完移除
@@ -123,4 +124,15 @@ Object.defineProperty(data, key, {
         return val;
     }
 });
+
+// Watcher.js
+Watcher.prototype = {
+    get: function(key) {
+        Dep.target = this;
+        this.value = data[key]; // 这里会触发属性的 getter, 从而添加订阅者
+        Dep.target = null;
+    }
+}
 ```
+
+这里已经实现了一个Observer了，已经具备了监听数据和数据变化通知订阅者的功能。那么接下来就是实现Compile了
