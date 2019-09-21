@@ -16,8 +16,8 @@ Compile.prototype = {
             child;
 
         // 将原生节点拷贝到 fragment
-        while (child = el.firstChild) {
-            fragment.appendChild(child)
+        while ((child = el.firstChild)) {
+            fragment.appendChild(child);
         }
 
         return fragment;
@@ -42,10 +42,11 @@ Compile.prototype = {
             if (node.childNodes && node.childNodes.length) {
                 me.complieElement(node);
             }
-        })
+        });
     },
     compile: function(node) {
-        var nodeAttrs = node.attributes, me = this;
+        var nodeAttrs = node.attributes,
+            me = this;
 
         [].slice.call(nodeAttrs).forEach(function(attr) {
             var attrName = attr.name;
@@ -56,16 +57,17 @@ Compile.prototype = {
                 // 事件指令
                 if (me.isEventDirective(dir)) {
                     compileUtil.eventHandler(node, me.$vm, exp, dir);
-                } else { // 普通指令
+                } else {
+                    // 普通指令
                     compileUtil && compileUtil[dir](node, me.$vm, exp);
                 }
 
-                node.removeAttribute(attrName)
+                node.removeAttribute(attrName);
             }
-        })
+        });
     },
     compileText: function(node, exp) {
-        compileUtil.text(node, this.$vm, exp)
+        compileUtil.text(node, this.$vm, exp);
     },
     isDirective: function(attr) {
         return attr.indexOf('v-') === 0;
@@ -81,7 +83,6 @@ Compile.prototype = {
     }
 };
 
-
 var compileUtil = {
     text: function(node, vm, exp) {
         this.bind(node, vm, exp, 'text');
@@ -92,7 +93,8 @@ var compileUtil = {
     model: function(node, vm, exp) {
         this.bind(node, vm, exp, 'model');
 
-        var me = this, val = this._getVMVal(vm, exp);
+        var me = this,
+            val = this._getVMVal(vm, exp);
 
         node.addEventListener('input', function(e) {
             var newValue = e.target.value;
@@ -102,7 +104,7 @@ var compileUtil = {
 
             me._setVMVal(vm, exp, newValue);
             val = newValue;
-        })
+        });
     },
     class: function(node, vm, exp) {
         this.bind(node, vm, exp, 'class');
@@ -113,8 +115,8 @@ var compileUtil = {
         updaterFn && updaterFn(node, this._getVMVal(vm, exp));
 
         new Watcher(vm, exp, function(value, oldValue) {
-            updaterFn && updaterFn(node, value, oldValue)
-        })
+            updaterFn && updaterFn(node, value, oldValue);
+        });
     },
     eventHandler: function(node, vm, exp, dir) {
         var eventType = dir.split(':')[1],
@@ -128,21 +130,21 @@ var compileUtil = {
         var val = vm;
         exp = exp.split('.');
         exp.forEach(function(k) {
-            val  = val[k];
-        })
+            val = val[k];
+        });
         return val;
     },
     _setVMVal: function(vm, exp, value) {
         var val = vm;
         exp = exp.split('.');
-        exp.forEach(function(k) {
+        exp.forEach(function(k, i) {
             // 非最后一个 key， 更新 val 的值
             if (i < exp.length - 1) {
-                val = val[k]
+                val = val[k];
             } else {
                 val[k] = value;
             }
-        })
+        });
     }
 };
 
@@ -152,7 +154,7 @@ function isUndefined(val) {
 
 var updater = {
     textUpdater: function(node, value) {
-        node.textContent = isUndefined(value) ? '': value;
+        node.textContent = isUndefined(value) ? '' : value;
     },
     htmlUpdater: function(node, value) {
         node.innerHTML = isUndefined(value) ? '' : value;
@@ -168,4 +170,4 @@ var updater = {
     modelUpdater: function(node, value, oldValue) {
         node.value = isUndefined(value) ? '' : value;
     }
-}
+};

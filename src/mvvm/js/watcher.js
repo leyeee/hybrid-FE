@@ -44,10 +44,10 @@ Watcher.prototype = {
          * 例如：当前 watcher 的是 'child.child.name'，那么child, child.child, child.child.name 这三个属性的 dep 都会加入当前 watcher
          */
 
-         if (!this.depIds.hasOwnProperty(dep.id)) {
-             dep.addSub(this);
-             thid.depIds[dep.id] = dep;
-         }
+        if (!this.depIds.hasOwnProperty(dep.id)) {
+            dep.addSub(this);
+            this.depIds[dep.id] = dep;
+        }
     },
     get: function() {
         Dep.target = this;
@@ -57,19 +57,19 @@ Watcher.prototype = {
     },
     parseGetter: function(exp) {
         if (/[^\w.$]/.test(exp)) {
-            return
+            return;
         }
 
         var exps = exp.split('.');
 
         return function(obj) {
-            for(var i = 0, len = exps.length; i < len; i++) {
+            for (var i = 0, len = exps.length; i < len; i++) {
                 if (!obj) {
-                    return
+                    return;
                 }
                 obj = obj[exps[i]];
             }
             return obj;
-        }
+        };
     }
-}
+};

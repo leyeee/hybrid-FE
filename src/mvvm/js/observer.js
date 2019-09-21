@@ -9,7 +9,7 @@ Observer.prototype = {
         var me = this;
         Object.keys(data).forEach(function(key) {
             me.convert(key, data[key]);
-        })
+        });
     },
     convert: function(key, val) {
         this.defineReactive(this.data, key, val);
@@ -20,10 +20,10 @@ Observer.prototype = {
 
         Object.defineProperty(data, key, {
             enumerable: true,
-            configurable: false,  // 不能再define
+            configurable: false, // 不能再define
             get: function() {
                 if (Dep.target) {
-                    Dep.depend()
+                    dep.depend();
                 }
                 return val;
             },
@@ -37,9 +37,9 @@ Observer.prototype = {
                 // 通知订阅者
                 dep.notify();
             }
-        })
+        });
     }
-}
+};
 
 function observe(value, vm) {
     if (!value || typeof value !== 'object') {
@@ -47,7 +47,6 @@ function observe(value, vm) {
     }
     return new Observer(value);
 }
-
 
 var uid = 0;
 
@@ -62,12 +61,12 @@ Dep.prototype = {
         this.subs.push(sub);
     },
     depend: function() {
-        Dep.target.addSub(this);
+        Dep.target.addDep(this);
     },
     notify: function() {
-        this.subs.forEach(function(sub){
+        this.subs.forEach(function(sub) {
             sub.update();
-        })
+        });
     },
     removeSub: function(sub) {
         var index = this.subs.indexOf(sub);
@@ -75,6 +74,6 @@ Dep.prototype = {
             this.subs.splice(index, 1);
         }
     }
-}
+};
 
 Dep.target = null;
