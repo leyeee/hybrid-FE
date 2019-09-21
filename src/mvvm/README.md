@@ -242,3 +242,117 @@ var updater = {
 这里通过递归遍历保证了每个节点及子节点都会解析编译到，包含了{{}}表达式声明的文本节点。指令的声明规定是通过特定前缀的节点属性来标记，如 `<span v-text="content" other-attr></span>`中的 v-text 便是指令，而 other-attr 变不是指令，只是普通的属性。监听数据、绑定更新函数的处理是在 compileUtil.bind() 这个方法中，通过 new Watcher() 添加回调函数来接受数据变化的通知。
 
 ## 实现 Watcher
+
+Watcher 订阅者作为 Compile 和 Observer 之间通信的桥梁，主要做的事情是：
+
+1. 在自身实例化时往属性订阅器（Dep）中添加自己
+2. 自身必须有一个 update 方法
+3. 待属性变动 dep.notify 通知时，能调用自身的 update 方法，并触发 Compile 中绑定的回调
+
+```javascript
+function Watcher(vm, exp, cb) {
+    this.vm = vm;
+    this.cb = cb;
+    this.exp = exp;
+    // 此处为了触发属性的getter，从而在dep添加自己，结合Observer更易理解
+    this.value = this.get();
+}
+
+Watcher.prototype = {
+    constructor: Watcher,
+    update: function() {
+        this.run(); // 属性值变化收到通知
+    },
+    run: function() {
+        var value = this.get();
+        var oldValue = this.value();
+        if (value !== oldValue) {
+            this.value = value;
+            this.cb.call(this.vm, value, oldValue); // 执行Compile中绑定的回调，更新视图
+        }
+    },
+    get: function() {
+        Dep.target = this; // 将当前订阅者指向自己
+        var value = this.vm[this.exp]; // 触发getter，添加自己到属性订阅器中
+        Dep.target = null; // 添加完毕，重置
+        return value;
+    }
+}
+
+// 这里再次列出Observer和Dep，方便理解
+Object.defineProperty(data, key, {
+	get: function() {
+		// 由于需要在闭包内添加watcher，所以可以在Dep定义一个全局target属性，暂存watcher, 添加完移除
+		Dep.target && dep.addDep(Dep.target);
+		return val;
+	}
+    // ... 省略
+});
+Dep.prototype = {
+    notify: function() {
+        this.subs.forEach(function(sub) {
+            sub.update(); // 调用订阅者的update方法，通知变化
+        });
+    }
+};
+```
+
+实例化 `Watcher` 的时候，调用 `get()` 方法，通过 `Dep.target = wathcherInstance` 标记订阅者是当前 wathcher 实例，强行触发属性定义的 getter 方法，当 getter 方法执行的时候，就会在属性的订阅器dep添加当前watcher实例，从而在属性值有变化的时候，watcherInstance就能收到更新通知。
+
+
+## 实现 mvvm
+
+MVVM作为数据绑定的入口，整合Observer、Compile和Watcher三者，通过Observer来监听自己的model数据变化，通过Compile来解析编译模板指令，最终利用Watcher搭起Observer和Compile之间的通信桥梁，达到数据变化 -> 视图更新；视图交互变化(input) -> 数据model变更的双向绑定效果。
+
+一个简单的MVVM构造器是这样子：
+
+```javascript
+function MVVM(options) {
+    this.$options = options;
+    var data = this._data = this.$options.data;
+    observe(data, this);
+    this.$compile = new Compile(options.el || document.body, this)
+}
+```
+但是这里有个问题，从代码中可看出监听的数据对象是options.data，每次需要更新视图，则必须通过var vm = new MVVM({data:{name: 'kindeng'}}); vm._data.name = 'dmq'; 这样的方式来改变数据。
+
+显然不符合我们一开始的期望，我们所期望的调用方式应该是这样的： var vm = new MVVM({data: {name: 'kindeng'}}); vm.name = 'dmq';
+
+所以这里需要给MVVM实例添加一个属性代理的方法，使访问vm的属性代理为访问vm._data的属性，改造后的代码如下：
+
+```javascript
+function MVVM(options) {
+    this.$options = options;
+    var data = this._data = this.$options.data, me = this;
+    // 属性代理，实现 vm.xxx -> vm._data.xxx
+    Object.keys(data).forEach(function(key) {
+        me._proxy(key);
+    });
+    observe(data, this);
+    this.$compile = new Compile(options.el || document.body, this)
+}
+
+MVVM.prototype = {
+	_proxy: function(key) {
+		var me = this;
+        Object.defineProperty(me, key, {
+            configurable: false,
+            enumerable: true,
+            get: function proxyGetter() {
+                return me._data[key];
+            },
+            set: function proxySetter(newVal) {
+                me._data[key] = newVal;
+            }
+        });
+	}
+};
+```
+
+这里主要还是利用了Object.defineProperty()这个方法来劫持了vm实例对象的属性的读写权，使读写vm实例的属性转成读写了vm._data的属性值，达到鱼目混珠的效果，哈哈
+
+至此，全部模块和功能已经完成了，如本文开头所承诺的两点。一个简单的MVVM模块已经实现，其思想和原理大部分来自经过简化改造的vue源码，猛戳这里可以看到本文的所有相关代码。 由于本文内容偏实践，所以代码量较多，且不宜列出大篇幅代码，所以建议想深入了解的童鞋可以再次结合本文源代码来进行阅读，这样会更加容易理解和掌握。
+
+## 总结
+
+本文主要围绕“几种实现双向绑定的做法”、“实现Observer”、“实现Compile”、“实现Watcher”、“实现MVVM”这几个模块来阐述了双向绑定的原理和实现。并根据思路流程渐进梳理讲解了一些细节思路和比较关键的内容点，以及通过展示部分关键代码讲述了怎样一步步实现一个双向绑定MVVM。文中肯定会有一些不够严谨的思考和错误，欢迎大家指正，有兴趣欢迎一起探讨和改进~
