@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.5/cropper.css"
+            integrity="sha256-x8iLuq/BLgVhgqscHiKrBZFP60kV2Xuilmpqy7kD/vI="
+            crossorigin="anonymous"
+        />
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.5/cropper.js"
+            integrity="sha256-U/8sUxL62BDCJvl8Dmu1uuTtKilSrHytsP3XfgCJZwo="
+            crossorigin="anonymous"
+        ></script>
+    </head>
+    <body>
+        <input type="file" id="upload" />
+        <img id="image" />
+        <script>
+            const imgEl = document.getElementById('image');
+            document.getElementById('upload').addEventListener('change', e => {
+                console.log(e.target.files[0]);
+                const image = new Image(e.target.files[0]);
+                // imgEl.src = image;
+                console.log(image);
+                new Cropper(image);
+            });
+        </script>
+    </body>
+</html>
