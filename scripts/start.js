@@ -1,6 +1,4 @@
 const path = require('path');
-const fs = require('fs');
-const util = require('util');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const webpackConfig = require('../build/wp.dev');
@@ -28,9 +26,6 @@ const server = new WebpackDevServer(compiler, {
     // }
 });
 
-fs.writeFile('build/config.json', util.inspect(webpackConfig, true, 10), err =>
-    console.log(err)
-);
 
 server.listen(8080, '127.0.0.1', err => {
     if (err) {

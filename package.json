@@ -4,14 +4,13 @@
     "description": "Multiple pages web app.",
     "main": "index.js",
     "scripts": {
-        "dev": "node bin/start.js",
+        "dev": "node scripts/start.js",
         "build": "webpack"
     },
     "author": "502533466@qq.com",
     "license": "MIT",
     "devDependencies": {
         "@babel/core": "^7.6.0",
-        "@babel/plugin-transform-runtime": "^7.6.0",
         "@babel/preset-env": "^7.6.0",
         "@babel/preset-react": "^7.0.0",
         "@babel/runtime": "^7.6.0",
